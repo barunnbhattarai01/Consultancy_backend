@@ -31,7 +31,8 @@ func main() {
 	}
 
 	//routing
-	gor.HandleFunc("/", h.Signup).Methods("GET")
+	gor.HandleFunc("/signup", controller.Signup).Methods("POST")
+	gor.HandleFunc("/login", controller.Login).Methods("POST")
 
 	//start the server
 	err := srv.ListenAndServe()
