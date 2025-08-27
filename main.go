@@ -6,12 +6,14 @@ import (
 	"os"
 
 	"github.com/barunnbhattarai01/consultancy_backend/controller"
+	"github.com/barunnbhattarai01/consultancy_backend/intailizer"
 
 	"github.com/gorilla/mux"
 )
 
 func init() {
-
+	intailizer.Loadenv()
+	intailizer.Connection()
 }
 
 func main() {
