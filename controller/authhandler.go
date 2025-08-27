@@ -3,10 +3,13 @@ package controller
 import (
 	"encoding/json"
 	"net/http"
+	"os"
 	"strings"
+	"time"
 
 	"github.com/barunnbhattarai01/consultancy_backend/intailizer"
 	"github.com/barunnbhattarai01/consultancy_backend/model"
+	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
@@ -79,5 +82,33 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, `{"invalid password"}`, http.StatusBadRequest)
 		return
 	}
+
+	//generate jwt
+	tokenString, err := generateJWT(user.Email)
+	if err != nil {
+		http.Error(w, `{"Failde to generate token"}`, http.StatusBadRequest)
+		return
+	}
+
 	w.Write([]byte(`{Login sucessfully"}`))
+
+	//return token to user
+	w.Header().Set("Content-Type", "application/json")
+	w.Write([]byte(`{"token"` + tokenString + `"`))
+}
+
+// JWT logic
+func generateJWT(email string) (string, error) {
+	//jwt.Mapclaims is a payload
+	claims := jwt.MapClaims{
+		"email": email,
+		"exp":   time.Now().Add(time.Hour * 24).Unix(),
+	}
+	secret := os.Getenv("JWT_TOKEN")
+
+	if secret == "" {
+		secret = "default_secret"
+	}
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	return token.SignedString([]byte(secret))
 }
