@@ -3,23 +3,21 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
+
+	"github.com/barunnbhattarai01/consultancy_backend/controller"
 
 	"github.com/gorilla/mux"
 )
 
-// it hold info of api
-type Api struct {
-	Addr string
-}
+func init() {
 
-func (a *Api) begining(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Hello"))
 }
 
 func main() {
-	Port := ":8080"
+	Port := ":" + os.Getenv("Port")
 	//instance of Api
-	h := &Api{Addr: Port}
+	h := &controller.Api{Addr: Port}
 
 	//gorilla mux
 	gor := mux.NewRouter()
@@ -31,7 +29,7 @@ func main() {
 	}
 
 	//routing
-	gor.HandleFunc("/", h.begining).Methods("GET")
+	gor.HandleFunc("/", h.Signup).Methods("GET")
 
 	//start the server
 	err := srv.ListenAndServe()
