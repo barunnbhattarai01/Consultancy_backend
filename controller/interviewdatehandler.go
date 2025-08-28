@@ -2,6 +2,7 @@ package controller
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 
 	"github.com/barunnbhattarai01/consultancy_backend/intailizer"
@@ -23,7 +24,8 @@ func InterviewDate(w http.ResponseWriter, r *http.Request) {
 
 	result := intailizer.DB.Create(&interview)
 	if result.Error != nil {
-		http.Error(w, "error while creating db", http.StatusBadRequest)
+		log.Println("DB create error:", result.Error)
+		http.Error(w, "error while creating db", http.StatusInternalServerError)
 		return
 	}
 

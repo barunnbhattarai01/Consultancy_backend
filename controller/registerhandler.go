@@ -7,7 +7,6 @@ import (
 
 	"github.com/barunnbhattarai01/consultancy_backend/intailizer"
 	"github.com/barunnbhattarai01/consultancy_backend/model"
-	"gorm.io/gorm"
 )
 
 func RegisterUser(w http.ResponseWriter, r *http.Request) {
@@ -26,7 +25,7 @@ func RegisterUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	//create a db
-	result := intailizer.DB.Session(&gorm.Session{PrepareStmt: false}).Create(&reg)
+	result := intailizer.DB.Create(&reg)
 
 	if result.Error != nil {
 		log.Println("DB create error:", result.Error)
