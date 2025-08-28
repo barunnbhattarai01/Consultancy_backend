@@ -15,6 +15,7 @@ import (
 func init() {
 	intailizer.Loadenv()
 	intailizer.Connection()
+	intailizer.Syncdatabase()
 }
 
 func main() {
@@ -46,7 +47,7 @@ func main() {
 	//routing
 	gor.HandleFunc("/signup", controller.Signup).Methods("POST")
 	gor.HandleFunc("/login", controller.Login).Methods("POST")
-
+	gor.HandleFunc("/register", controller.RegisterUser).Methods("POST")
 	//start the server
 	err := srv.ListenAndServe()
 
