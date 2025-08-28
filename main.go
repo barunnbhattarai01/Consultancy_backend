@@ -9,6 +9,7 @@ import (
 	"github.com/barunnbhattarai01/consultancy_backend/intailizer"
 
 	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 )
 
 func init() {
@@ -24,10 +25,22 @@ func main() {
 	//gorilla mux
 	gor := mux.NewRouter()
 
+	//cors
+	c := cors.New(cors.Options{
+		AllowedOrigins:   []string{"http://localhost:3000"},
+		AllowedMethods:   []string{"GET", "POST", "OPTIONS"},
+		AllowedHeaders:   []string{"Content-Type", "Authorization"},
+		AllowCredentials: true,
+	})
+
+	//c is middleware and we passed as gor as argument to enable cors in all route that gor handle
+
+	handler := c.Handler(gor)
+
 	//configure the http serverrr
 	srv := &http.Server{
 		Addr:    h.Addr,
-		Handler: gor,
+		Handler: handler,
 	}
 
 	//routing
