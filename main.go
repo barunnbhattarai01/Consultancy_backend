@@ -48,6 +48,7 @@ func main() {
 	gor.HandleFunc("/signup", controller.Signup).Methods("POST")
 	gor.HandleFunc("/login", controller.Login).Methods("POST")
 	gor.HandleFunc("/register", controller.RegisterUser).Methods("POST")
+	gor.HandleFunc("/interviewdate", controller.InterviewDate).Methods("POST")
 	//start the server
 	err := srv.ListenAndServe()
 

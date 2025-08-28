@@ -6,5 +6,5 @@ import "github.com/barunnbhattarai01/consultancy_backend/model"
 // adding missing colums and rows
 
 func Syncdatabase() {
-	DB.AutoMigrate(&model.User{}, &model.Register{})
+	DB.AutoMigrate(&model.User{}, &model.Register{}, &model.InterviewDate{})
 }
