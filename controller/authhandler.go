@@ -11,6 +11,7 @@ import (
 	"github.com/barunnbhattarai01/consultancy_backend/model"
 	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
+	"gorm.io/gorm"
 )
 
 // it hold info of api
@@ -40,7 +41,7 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 
 	//sign upinngg
 	user := model.User{Email: body.Email, Password: string(hash)}
-	result := intailizer.DB.Create(&user)
+	result := intailizer.DB.Session(&gorm.Session{PrepareStmt: false, SkipDefaultTransaction: false}).Create(&user)
 
 	if result.Error != nil {
 		http.Error(w, `{"message":"failed to create user"}`, http.StatusBadRequest)
