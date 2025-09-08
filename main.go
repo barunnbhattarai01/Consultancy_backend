@@ -7,6 +7,7 @@ import (
 
 	"github.com/barunnbhattarai01/consultancy_backend/controller"
 	"github.com/barunnbhattarai01/consultancy_backend/intailizer"
+	"github.com/barunnbhattarai01/consultancy_backend/middleware"
 
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
@@ -47,7 +48,7 @@ func main() {
 	//routing
 	gor.HandleFunc("/signup", controller.Signup).Methods("POST")
 	gor.HandleFunc("/login", controller.Login).Methods("POST")
-	gor.HandleFunc("/register", controller.RegisterUser).Methods("POST")
+	gor.HandleFunc("/register", middleware.JwtMiddleware(controller.RegisterUser)).Methods("POST")
 	gor.HandleFunc("/interviewdate", controller.InterviewDate).Methods("POST")
 	//start the server
 	err := srv.ListenAndServe()
