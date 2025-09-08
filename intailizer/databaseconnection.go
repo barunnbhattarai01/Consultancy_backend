@@ -20,7 +20,7 @@ func Connection() {
 	})
 
 	if err != nil {
-		log.Fatal("Connection error")
+		log.Fatalf("Connection error %v", err)
 	}
 	fmt.Printf("connected to supabase sucessfully")
 

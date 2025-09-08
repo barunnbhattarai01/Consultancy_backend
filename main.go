@@ -50,6 +50,7 @@ func main() {
 	gor.HandleFunc("/login", controller.Login).Methods("POST")
 	gor.HandleFunc("/register", middleware.JwtMiddleware(controller.RegisterUser)).Methods("POST")
 	gor.HandleFunc("/interviewdate", controller.InterviewDate).Methods("POST")
+	gor.HandleFunc("/ws/manager", manager.ServeWS).Methods("GET")
 	//start the server
 	err := srv.ListenAndServe()
 
