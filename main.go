@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"log"
 	"net/http"
 	"os"
@@ -44,6 +45,9 @@ func main() {
 		Addr:    h.Addr,
 		Handler: handler,
 	}
+
+	// Create one Manager instance
+	manager := controller.NewManager(context.Background())
 
 	//routing
 	gor.HandleFunc("/signup", controller.Signup).Methods("POST")
