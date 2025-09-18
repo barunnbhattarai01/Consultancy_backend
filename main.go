@@ -21,6 +21,8 @@ func init() {
 }
 
 func main() {
+	defer intailizer.DB.Close()
+
 	Port := ":" + os.Getenv("Port")
 	//instance of Api
 	h := &controller.Api{Addr: Port}

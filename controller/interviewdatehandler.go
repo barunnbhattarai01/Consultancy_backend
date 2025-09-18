@@ -7,7 +7,6 @@ import (
 
 	"github.com/barunnbhattarai01/consultancy_backend/intailizer"
 	"github.com/barunnbhattarai01/consultancy_backend/model"
-	"gorm.io/gorm"
 )
 
 func InterviewDate(w http.ResponseWriter, r *http.Request) {
@@ -23,9 +22,11 @@ func InterviewDate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	result := intailizer.DB.Session(&gorm.Session{PrepareStmt: false, SkipDefaultTransaction: false}).Create(&interview)
-	if result.Error != nil {
-		log.Println("DB create error:", result.Error)
+	query := `insert into interviewregister (name,address,date,images) values($1,$2,$3,$4) returning id`
+	var lastid int
+	err := intailizer.DB.QueryRow(query, interview.Name, interview.Address, interview.Date, interview.Images).Scan(&lastid)
+	if err != nil {
+		log.Println("DB create error:", err)
 		http.Error(w, "error while creating db", http.StatusInternalServerError)
 		return
 	}

@@ -24,22 +24,24 @@ func Syncdatabase() {
 	//student info register
 	createregistertable := `
 	 create table if not exists register(
+	 id serial primary key,
 	  name text not null,
 	  address text not null,
 	  phone text not null,
 	  Age integer not null,
-     join_date  Date not null,
+     join_date  Date not null
 	 )
 	 `
 
 	_, err = DB.Exec(createregistertable)
 	if err != nil {
-		log.Fatal("failed to exec the register table")
+		log.Fatalf("failed to exec the register table %v", err)
 	}
 
 	//interview date
 	createinterviewdate := `
-	create table if not exists interview(
+	create table if not exists interviewregister(
+	id serial primary key,
 	 name text not null,
 	  address text not null,
 	  date Date not null,
@@ -54,5 +56,3 @@ func Syncdatabase() {
 	log.Printf("table execute sucessfully")
 
 }
-
-//err := DB.AutoMigrate(&model.User{}, &model.Register{}, &model.InterviewDate{})

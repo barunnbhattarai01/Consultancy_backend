@@ -11,7 +11,6 @@ import (
 	"github.com/barunnbhattarai01/consultancy_backend/model"
 	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
-	"gorm.io/gorm"
 )
 
 // it hold info of api
@@ -40,10 +39,12 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 	}
 
 	//sign upinngg
-	user := model.User{Email: body.Email, Password: string(hash)}
-	result := intailizer.DB.Session(&gorm.Session{PrepareStmt: false, SkipDefaultTransaction: false}).Create(&user)
+	email := strings.ToLower(body.Email)
+	user := model.User{Email: email, Password: string(hash)}
+	query := `insert into userauth (email,password) values ($1,$2)`
+	_, err = intailizer.DB.Exec(query, user.Email, user.Password)
 
-	if result.Error != nil {
+	if err != nil {
 		http.Error(w, `{"message":"failed to create user"}`, http.StatusBadRequest)
 		return
 	}
@@ -71,9 +72,10 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	var user model.User
 
 	email := strings.ToLower(strings.TrimSpace(body.Email))
-	//session create the new db session
-	result := intailizer.DB.Where("email=?", email).First(&user)
-	if result.Error != nil {
+
+	query := `select email,password from userauth where email=$1`
+	err = intailizer.DB.QueryRow(query, email).Scan(&email, &user.Password)
+	if err != nil {
 		http.Error(w, `{"message":"Email not found"}`, http.StatusBadRequest)
 		return
 	}
