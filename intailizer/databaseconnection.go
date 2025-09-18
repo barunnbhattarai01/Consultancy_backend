@@ -1,28 +1,34 @@
 package intailizer
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
 	"os"
-
-	"gorm.io/driver/postgres"
-	"gorm.io/gorm"
 )
 
 // package level variables(other can accessed just by intializer.DB)
-var DB *gorm.DB
+var DB *sql.DB
 
 func Connection() {
 	dsn := os.Getenv("DB_URL")
-	//create the connection to databasee and tell gorm to use postgress drivers
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
-		PrepareStmt: false,
-	})
 
-	if err != nil {
-		log.Fatalf("Connection error %v", err)
+	if dsn == "" {
+		log.Fatalf("error in db url ")
 	}
-	fmt.Printf("connected to supabase sucessfully")
+
+	//open database
+	db, err := sql.Open("postgres", dsn)
+	if err != nil {
+		log.Fatalf("error while connecting the database")
+	}
+
+	//verify  coonection
+	if err := db.Ping(); err != nil {
+		log.Fatalf("failed to connected ")
+	}
+
+	fmt.Printf("connected to postgreess sucessfully")
 
 	DB = db
 }

@@ -2,19 +2,57 @@ package intailizer
 
 import (
 	"log"
-
-	"github.com/barunnbhattarai01/consultancy_backend/model"
 )
 
 //sync database means creating table if not exists and
 // adding missing colums and rows
 
 func Syncdatabase() {
-	err := DB.AutoMigrate(&model.User{}, &model.Register{}, &model.InterviewDate{})
+	//userauth table
+	createUsertable := `
+	create table if not exists userauth(
+	email text primary key,
+	password text not null
+	)
+	`
 
+	_, err := DB.Exec(createUsertable)
 	if err != nil {
-		log.Println("Error while migarating", err)
-	} else {
-		log.Println("sucessfully migarted")
+		log.Fatal("failed to exec the userauth table")
 	}
+
+	//student info register
+	createregistertable := `
+	 create table if not exists register(
+	  name text not null,
+	  address text not null,
+	  phone text not null,
+	  Age integer not null,
+     join_date  Date not null,
+	 )
+	 `
+
+	_, err = DB.Exec(createregistertable)
+	if err != nil {
+		log.Fatal("failed to exec the register table")
+	}
+
+	//interview date
+	createinterviewdate := `
+	create table if not exists interview(
+	 name text not null,
+	  address text not null,
+	  date Date not null,
+	  images text not null
+	)
+	`
+	_, err = DB.Exec(createinterviewdate)
+	if err != nil {
+		log.Fatal("failed to exec the interview table")
+	}
+
+	log.Printf("table execute sucessfully")
+
 }
+
+//err := DB.AutoMigrate(&model.User{}, &model.Register{}, &model.InterviewDate{})
