@@ -23,11 +23,11 @@ func Syncdatabase() {
 
 	//student info register
 	createregistertable := `
-	 create table if not exists register(
+	 create table if not exists studentregister(
 	 id serial primary key,
 	  name text not null,
 	  address text not null,
-	  phone text not null,
+	  phone integer not null,
 	  Age integer not null,
      join_date  Date not null
 	 )
