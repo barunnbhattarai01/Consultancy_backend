@@ -23,7 +23,11 @@ func init() {
 func main() {
 	defer intailizer.DB.Close()
 
-	Port := ":" + os.Getenv("Port")
+	portt := os.Getenv("Port")
+	if portt == "" {
+		portt = "8080"
+	}
+	Port := ":" + portt
 	//instance of Api
 	h := &controller.Api{Addr: Port}
 
