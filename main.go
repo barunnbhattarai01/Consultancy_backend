@@ -23,7 +23,7 @@ func init() {
 func main() {
 	defer intailizer.DB.Close()
 
-	portt := os.Getenv("Port")
+	portt := os.Getenv("PORT")
 	if portt == "" {
 		portt = "8080"
 	}
